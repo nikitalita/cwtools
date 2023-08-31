@@ -97,8 +97,8 @@ let addDLCs (workspaceDirectory: WorkspaceDirectory) =
             match Directory.EnumerateFiles dlcDir |> Seq.tryFind (fun f -> (Path.GetExtension f) = ".zip") with
             | Some zip ->
                 // eprintfn "d2 %A" zip
-                use file = File.OpenRead(zip)
                 try
+                    use file = File.OpenRead(zip)
                     use zipFile = new ZipArchive(file, ZipArchiveMode.Read)
                     let files = zipFile.Entries |> Seq.map (fun e -> Path.Combine([|"uri:"; zip; e.FullName.Replace("\\","/")|]), use sr = new StreamReader(e.Open()) in sr.ReadToEnd())
                                 |> List.ofSeq
